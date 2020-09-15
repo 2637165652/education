@@ -22,7 +22,7 @@
             </el-submenu>
           </el-submenu>
           <el-menu-item index="3" >个人中心</el-menu-item>
-          <el-menu-item index="4">消息管理</el-menu-item>
+          <el-menu-item index="4" >消息管理</el-menu-item>
         </el-menu>
       </el-header>
       <el-main><router-view/></el-main>
@@ -41,6 +41,16 @@ export default {
   },
   components: {
     Header
+  },
+  computed: {
+    isLogined: {
+      get: function () {
+        return this.$store.state.isLogined
+      },
+      set: function (newV) {
+        this.$store.commit('setValue', newV)
+      }
+    }
   },
   methods: {
     handleSelect (key, keyPath) {

@@ -31,24 +31,20 @@ var connection = mysql.createConnection({
 // 连接数据库
 connection.connect()
 
-app.post('/test', function (req, res) {
-  console.log(req.body)
-  var sql = 'select * from record_uncontacted where studentsex="女" order by releaseDate desc' // 降序，最新发布的显示在上面
-  connection.query(sql, function (err, result) {
-    if (err) {
-      console.log('[查询出错] - ', err.message)
-    } else {
-      console.log('查询成功')
-      var response = result
-      res.end(JSON.stringify(response))
-    }
-  })
-  // 作用同res.send()
-})
-
+// 获取家教信息
 app.get('/family_education', (req, res) => {
-  console.log(req.query)
-  var sql = 'select * from record_uncontacted where studentsex="女" order by releaseDate desc' // 降序，最新发布的显示在上面
+  if (req.query.recordNum === '') console.log('空')
+  console.log(req.query, req.query.recordNum, req.query.grade, req.query.subject, req.query.studentsex)
+  var page = parseInt(req.query.page)
+  var pageSize = parseInt(req.query.pageSize)
+  var index = (page - 1) * pageSize
+  // 多条件查询，动态拼接sql
+  var sql = 'select * from record_uncontacted where 1=1'
+  if (req.query.recordNum !== '') sql = sql + " and recordNum= '" + req.query.recordNum + "'"
+  if (req.query.grade !== '') sql = sql + " and grade= '" + req.query.grade + "'"
+  if (req.query.subject !== '') sql = sql + " and subject= '" + req.query.subject + "'"
+  if (req.query.studentsex !== '') sql = sql + " and studentsex= '" + req.query.studentsex + "'"
+  sql = sql + ' order by releaseDate desc' // 降序，最新发布的显示在上面
   connection.query(sql, function (err, result) {
     if (err) {
       console.log('[查询出错] - ', err.message)
@@ -57,9 +53,38 @@ app.get('/family_education', (req, res) => {
       var response = {
         code: 100,
         pageHolder: {
+          pageSize: pageSize,
+          currentPage: page,
           count: result.length,
-          list: result
+          list: result.slice(index, index + pageSize)
         }
+      }
+      res.send(response)
+    }
+  })
+})
+// 用户登录
+app.post('/login', function (req, res) {
+  console.log(req.body)
+  var sql = 'select * from usermessage where username = ? and password = ?'
+  var sqlParams = [req.body.username, req.body.password]
+  var response = {}
+  connection.query(sql, sqlParams, function (err, result) {
+    if (err) {
+      console.log('[登录认证出错] - ', err.message)
+      return
+    }
+    if (result.length === 1) {
+      console.log('登陆认证成功')
+      response = {
+        status: 200,
+        user: result[0]
+      }
+      res.send(response)
+    } else {
+      console.log('账号或密码错误')
+      response = {
+        status: 403
       }
       res.send(response)
     }
