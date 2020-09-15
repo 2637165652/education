@@ -8,7 +8,7 @@ const store = new Vuex.Store({
     isLogined: false
   },
   mutations: {
-    setValue (state, newV) {
+    setLoginStatus (state, newV) {
       state.isLogined = newV
     }
   }

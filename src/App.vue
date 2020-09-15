@@ -11,18 +11,21 @@
           text-color="#fff"
           active-text-color="#ffd04b">
           <el-menu-item index="1">家教信息</el-menu-item>
-          <el-submenu index="2">
-            <template slot="title">我的家教</template>
-            <el-menu-item index="2-1">未联系家教</el-menu-item>
-            <el-menu-item index="2-2">已联系家教</el-menu-item>
-            <el-submenu index="2-3">
+          <template v-if="isLogined">
+            <el-submenu index="2">
               <template slot="title">我的家教</template>
-              <el-menu-item index="2-3-1">未联系家教</el-menu-item>
-              <el-menu-item index="2-3-2">已联系家教</el-menu-item>
+              <el-menu-item index="2-1">未联系家教</el-menu-item>
+              <el-menu-item index="2-2">已联系家教</el-menu-item>
+              <el-submenu index="2-3">
+                <template slot="title">我的家教</template>
+                <el-menu-item index="2-3-1">未联系家教</el-menu-item>
+                <el-menu-item index="2-3-2">已联系家教</el-menu-item>
+              </el-submenu>
             </el-submenu>
-          </el-submenu>
-          <el-menu-item index="3" >个人中心</el-menu-item>
-          <el-menu-item index="4" >消息管理</el-menu-item>
+            <el-menu-item index="3" >个人中心</el-menu-item>
+            <el-menu-item index="4" >消息管理</el-menu-item>
+          </template>
+          <el-menu-item index="0" v-else>登录/注册</el-menu-item>
         </el-menu>
       </el-header>
       <el-main><router-view/></el-main>
@@ -36,7 +39,8 @@ export default {
   name: 'App',
   data () {
     return {
-      activeIndex: '1'
+      activeIndex: '1',
+      user: {}
     }
   },
   components: {
@@ -48,14 +52,20 @@ export default {
         return this.$store.state.isLogined
       },
       set: function (newV) {
-        this.$store.commit('setValue', newV)
+        this.$store.commit('setLoginStatus', newV)
       }
+    }
+  },
+  created () {
+    if (localStorage.getItem('user')) {
+      this.isLogined = true
     }
   },
   methods: {
     handleSelect (key, keyPath) {
       console.log(key, keyPath)
       this.activeIndex = key
+      // console.log(this.$store.state.isLogined)
     }
   }
 }

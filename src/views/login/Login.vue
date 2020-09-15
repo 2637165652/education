@@ -54,7 +54,10 @@ export default {
                 type: 'error'
               })
             } else {
-              //
+              // 本地存储用户信息
+              localStorage.setItem('user', JSON.stringify({userId: res.data.userId, username: res.data.username, password: res.data.password}))
+              this.$store.commit('setLoginStatus', true)
+              this.$router.push({name: 'Home'})
             }
           }).catch(err => {
             console.log(err)
