@@ -10,22 +10,21 @@
           background-color="#545c64"
           text-color="#fff"
           active-text-color="#ffd04b">
-          <el-menu-item index="1">家教信息</el-menu-item>
+          <el-menu-item index="/home">家教信息</el-menu-item>
           <template v-if="isLogined">
-            <el-submenu index="2">
+            <el-submenu index="record">
               <template slot="title">我的家教</template>
-              <el-menu-item index="2-1">未联系家教</el-menu-item>
-              <el-menu-item index="2-2">已联系家教</el-menu-item>
-              <el-submenu index="2-3">
-                <template slot="title">我的家教</template>
-                <el-menu-item index="2-3-1">未联系家教</el-menu-item>
-                <el-menu-item index="2-3-2">已联系家教</el-menu-item>
-              </el-submenu>
+              <el-menu-item index="uncontact">未联系家教</el-menu-item>
+              <el-menu-item index="contacted">已联系家教</el-menu-item>
             </el-submenu>
-            <el-menu-item index="3" >个人中心</el-menu-item>
-            <el-menu-item index="4" >消息管理</el-menu-item>
+            <el-menu-item index="/message" >消息管理</el-menu-item>
+            <el-submenu index="user">
+              <template slot="title">个人中心</template>
+              <el-menu-item index="modify">信息修改</el-menu-item>
+              <el-menu-item index="/logout" @click="logout">退出登录</el-menu-item>
+            </el-submenu>
           </template>
-          <el-menu-item index="0" v-else>登录/注册</el-menu-item>
+          <el-menu-item index="/login" v-else>登录/注册</el-menu-item>
         </el-menu>
       </el-header>
       <el-main><router-view/></el-main>
@@ -39,7 +38,7 @@ export default {
   name: 'App',
   data () {
     return {
-      activeIndex: '1',
+      activeIndex: '/home',
       user: {}
     }
   },
@@ -59,13 +58,34 @@ export default {
   created () {
     if (localStorage.getItem('user')) {
       this.isLogined = true
+      this.user = JSON.parse(localStorage.getItem('user'))
+    } else {
+      this.isLogined = false
     }
   },
   methods: {
     handleSelect (key, keyPath) {
       console.log(key, keyPath)
       this.activeIndex = key
-      // console.log(this.$store.state.isLogined)
+      console.log(this.activeIndex)
+      if (key === '/home') {
+        this.$router.push({ name: 'Home' })
+      }
+      if (key === '/logout') {
+        localStorage.removeItem('user')
+        this.isLogined = false
+        this.$router.push({ name: 'Login' })
+        this.activeIndex = '/login'
+      }
+      if (key === '/login') {
+        this.$router.push({ name: 'Login' })
+      }
+      if (key === '/message') {
+        this.$router.push({ name: 'Message' })
+      }
+    },
+    logout () {
+      //
     }
   }
 }

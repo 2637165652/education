@@ -33,8 +33,7 @@ connection.connect()
 
 // 获取家教信息
 app.get('/family_education', (req, res) => {
-  if (req.query.recordNum === '') console.log('空')
-  console.log(req.query, req.query.recordNum, req.query.grade, req.query.subject, req.query.studentsex)
+  console.log(req.query)
   var page = parseInt(req.query.page)
   var pageSize = parseInt(req.query.pageSize)
   var index = (page - 1) * pageSize
@@ -66,7 +65,7 @@ app.get('/family_education', (req, res) => {
 // 用户登录
 app.post('/login', function (req, res) {
   console.log(req.body)
-  var sql = 'select * from usermessage where username = ? and password = ?'
+  var sql = 'select userId,username,password from usermessage where username = ? and password = ?'
   var sqlParams = [req.body.username, req.body.password]
   var response = {}
   connection.query(sql, sqlParams, function (err, result) {
@@ -87,6 +86,47 @@ app.post('/login', function (req, res) {
         status: 403
       }
       res.send(response)
+    }
+  })
+})
+// 用户注册
+app.post('/register', function (req, res) {
+  console.log(req.body)
+  // 判断用户名是否已经存在
+  var sql = 'select * from usermessage where username = ?'
+  var sqlParams = [req.body.username]
+  var response = {}
+  connection.query(sql, sqlParams, function (err, result) {
+    if (err) {
+      console.log(err.message)
+    }
+    if (result.length === 1) {
+      console.log('此用户名已存在！')
+      response = {
+        status: 401
+      }
+      res.send(response)
+    } else {
+      // 将用户注册信息插入用户表
+      sql = 'insert into usermessage(username,password) values(?,?)'
+      sqlParams = [req.body.username, req.body.password]
+      connection.query(sql, sqlParams, function (err2, result2) {
+        if (err2) {
+          console.log(err2.message)
+        } else {
+          console.log('用户注册成功')
+          sql = 'select userId,username,password from usermessage where username=?'
+          sqlParams = [req.body.username]
+          connection.query(sql, sqlParams, function (err3, result3) {
+            response = {
+              status: 200,
+              // 将用户id，name，password返回
+              user: result3[0]
+            }
+            res.send(response)
+          })
+        }
+      })
     }
   })
 })

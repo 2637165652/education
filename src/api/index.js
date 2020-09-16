@@ -30,3 +30,14 @@ export function login (username, password) {
     }
   })
 }
+
+export function register (username, password) {
+  return axios({
+    url: '/register',
+    method: 'post',
+    data: {
+      username,
+      password
+    }
+  })
+}

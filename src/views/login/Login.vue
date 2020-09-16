@@ -22,7 +22,7 @@
 </template>
 
 <script>
-import { login } from '@/api/index'
+import { login, register } from '@/api/index'
 export default {
   name: 'Login',
   data () {
@@ -55,7 +55,7 @@ export default {
               })
             } else {
               // 本地存储用户信息
-              localStorage.setItem('user', JSON.stringify({userId: res.data.userId, username: res.data.username, password: res.data.password}))
+              localStorage.setItem('user', JSON.stringify(res.data.user))
               this.$store.commit('setLoginStatus', true)
               this.$router.push({name: 'Home'})
             }
@@ -67,7 +67,29 @@ export default {
       })
     },
     registerSubmit () {
-      //
+      this.$refs.form.validate(valid => {
+        if (!valid) return
+        this.submitting2 = true
+        register(this.form.username, this.form.password).then(res => {
+          console.log(res.data)
+          if (res.data.status === 401) {
+            this.$message({
+              showClose: true,
+              message: '此用户名已存在！',
+              type: 'error'
+            })
+          } else {
+            // 本地存储用户信息
+            localStorage.setItem('user', JSON.stringify(res.data.user))
+            this.$store.commit('setLoginStatus', true)
+            this.$router.push({name: 'Home'})
+          }
+        }).catch(err => {
+          console.log(err)
+        }).finally(() => {
+          this.submitting2 = false
+        })
+      })
     }
   }
 }
