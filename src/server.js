@@ -131,6 +131,40 @@ app.post('/register', function (req, res) {
   })
 })
 
+// 领取家教
+app.post('/receive', function (req, res) {
+  console.log(req.body)
+  var date = new Date(req.body.releaseDate)
+  var releaseDate = date.toLocaleDateString()
+  // 将该份家教移入已联系记录表
+  var insertSql = 'insert into record_contacted values(?,?,?,?,?,?,?,?,?,?,?,?,?,?)'
+  var sqlParams1 = [req.body.recordNum, req.body.studentsex, req.body.grade, req.body.subject, req.body.requirement,
+    req.body.address, req.body.linkname, req.body.linkphone, req.body.publisherId, releaseDate,
+    req.body.teachername, req.body.teacherphone, req.body.teacherId]
+  date = new Date()
+  var receiveDate = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate() + ' ' + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds()
+  sqlParams1.push(receiveDate)
+  connection.query(insertSql, sqlParams1, function (err1, result1) {
+    if (err1) {
+      console.log('插入记录出错-' + err1.message)
+      res.send({code: 101})
+    } else {
+      // 从未联系表中删除该份家教
+      var deleteSql = 'delete from record_uncontacted where recordNum=?'
+      var sqlParams2 = [req.body.recordNum]
+      connection.query(deleteSql, sqlParams2, function (err2, result2) {
+        if (err2) {
+          console.log('删除出错' + err2.message)
+          res.send({code: 101})
+        } else {
+          console.log('插入已联系并删除未联系记录成功')
+          res.send({code: 100})
+        }
+      })
+    }
+  })
+})
+
 app.listen(8888, function () {
   console.log('Your app is running at http://127.0.0.1:8888')
 })

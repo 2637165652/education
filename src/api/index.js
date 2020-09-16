@@ -41,3 +41,42 @@ export function register (username, password) {
     }
   })
 }
+
+export function receive ({ recordNum, grade, subject, studentsex, requirement, address, linkname, linkphone, releaseDate, publisherId, teacherId, teachername, teacherphone }) {
+  return axios({
+    url: '/receive',
+    method: 'post',
+    data: {
+      recordNum,
+      grade,
+      subject,
+      studentsex,
+      requirement,
+      address,
+      linkname,
+      linkphone,
+      releaseDate,
+      publisherId,
+      teacherId,
+      teachername,
+      teacherphone
+    }
+  })
+}
+
+export function release ({ grade, subject, studentsex, requirement, address, linkname, linkphone, publisherId }) {
+  return axios({
+    url: '/release',
+    method: 'post',
+    data: {
+      grade,
+      subject,
+      studentsex,
+      requirement,
+      address,
+      linkname,
+      linkphone,
+      publisherId
+    }
+  })
+}

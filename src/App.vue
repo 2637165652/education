@@ -38,7 +38,7 @@ export default {
   name: 'App',
   data () {
     return {
-      activeIndex: '/home',
+      // activeIndex: '/home',
       user: {}
     }
   },
@@ -53,6 +53,14 @@ export default {
       set: function (newV) {
         this.$store.commit('setLoginStatus', newV)
       }
+    },
+    activeIndex: {
+      get () {
+        return this.$route.path
+      },
+      set (newV) {
+        // this.activeIndex = newV
+      }
     }
   },
   created () {
@@ -66,7 +74,7 @@ export default {
   methods: {
     handleSelect (key, keyPath) {
       console.log(key, keyPath)
-      this.activeIndex = key
+      // this.activeIndex = key
       console.log(this.activeIndex)
       if (key === '/home') {
         this.$router.push({ name: 'Home' })
@@ -82,6 +90,7 @@ export default {
       }
       if (key === '/message') {
         this.$router.push({ name: 'Message' })
+        console.log(this.$route.path)
       }
     },
     logout () {
