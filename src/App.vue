@@ -12,16 +12,16 @@
           active-text-color="#ffd04b">
           <el-menu-item index="/home">家教信息</el-menu-item>
           <template v-if="isLogined">
-            <el-submenu index="record">
+            <el-submenu index="/record">
               <template slot="title">我的家教</template>
-              <el-menu-item index="uncontact">未联系家教</el-menu-item>
-              <el-menu-item index="contacted">已联系家教</el-menu-item>
+              <el-menu-item index="/record/uncontact">未联系家教</el-menu-item>
+              <el-menu-item index="/record/contacted">已联系家教</el-menu-item>
             </el-submenu>
             <el-menu-item index="/message" >消息管理</el-menu-item>
-            <el-submenu index="user">
+            <el-submenu index="/user">
               <template slot="title">个人中心</template>
-              <el-menu-item index="modify">信息修改</el-menu-item>
-              <el-menu-item index="/logout" @click="logout">退出登录</el-menu-item>
+              <el-menu-item index="/user/profile">用户资料</el-menu-item>
+              <el-menu-item index="/logout" @click="logout">退出</el-menu-item>
             </el-submenu>
           </template>
           <el-menu-item index="/login" v-else>登录/注册</el-menu-item>
@@ -79,6 +79,19 @@ export default {
       if (key === '/home') {
         this.$router.push({ name: 'Home' })
       }
+      if (key === '/record/uncontact') {
+        this.$router.push({ name: 'Uncontact' })
+      }
+      if (key === '/record/contacted') {
+        this.$router.push({ name: 'Contacted' })
+      }
+      if (key === '/message') {
+        this.$router.push({ name: 'Message' })
+        console.log(this.$route.path)
+      }
+      if (key === '/user/profile') {
+        this.$router.push({ name: 'Profile' })
+      }
       if (key === '/logout') {
         localStorage.removeItem('user')
         this.isLogined = false
@@ -87,10 +100,6 @@ export default {
       }
       if (key === '/login') {
         this.$router.push({ name: 'Login' })
-      }
-      if (key === '/message') {
-        this.$router.push({ name: 'Message' })
-        console.log(this.$route.path)
       }
     },
     logout () {

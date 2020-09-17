@@ -1,12 +1,10 @@
 <template>
-  <div>
-      我是家教记录
-  </div>
+  <div>我是简介</div>
 </template>
 
 <script>
 export default {
-  name: 'Record'
+  name: 'Profile'
 }
 </script>
 
