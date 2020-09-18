@@ -190,7 +190,7 @@ app.post('/release', function (req, res) {
 app.get('/get_uncontact', (req, res) => {
   // console.log(req.query)
   var sql = 'select * from record_uncontacted where publisherId=? order by releaseDate desc' // 降序
-  var sqlParams = [req.query.publisherId]
+  var sqlParams = [req.query.userId]
   connection.query(sql, sqlParams, function (err, result) {
     if (err) {
       console.log('[查询记录出错] - ' + err.message)
@@ -205,6 +205,31 @@ app.get('/get_uncontact', (req, res) => {
     }
   })
 })
+// 未联系 -> 修改
+app.post('/modify', (req, res) => {
+  console.log(req.body)
+  var date = new Date()
+  var releaseDate = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate() + ' ' + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds()
+  var sql = 'update record_uncontacted set studentsex=?,grade=?,subject=?,requirement=?,address=?,linkname=?,linkphone=?,releaseDate=? where recordNum=?'
+  var sqlParams = [req.body.studentsex, req.body.grade, req.body.subject, req.body.requirement, req.body.address,
+    req.body.linkname, req.body.linkphone, releaseDate, req.body.recordNum]
+  connection.query(sql, sqlParams, function (err, result) {
+    if (err) {
+      console.log('[修改家教出错] - ', err.message)
+      res.send({code: 101})
+    } else {
+      console.log('修改家教成功')
+      res.send({code: 100})
+    }
+  })
+})
+// 撤销家教
+app.post('/cancel', (req, res) => {
+  var record = req.body.record
+  console.log(req.body.item.recordNum)
+  res.send({code: 100})
+})
+
 // 我的家教 > 已联系
 app.get('/get_contacted', (req, res) => {
   // console.log(req.query)
@@ -245,5 +270,5 @@ app.post('/re_release', (req, res) => {
 })
 
 app.listen(8888, function () {
-  console.log('Your app is running at http://127.0.0.1:8888')
+  console.log('Your server is running at http://127.0.0.1:8888')
 })

@@ -16,6 +16,7 @@
               <template slot="title">我的家教</template>
               <el-menu-item index="/record/uncontact">未联系家教</el-menu-item>
               <el-menu-item index="/record/contacted">已联系家教</el-menu-item>
+              <el-menu-item index="/record/canceled">已撤销家教</el-menu-item>
             </el-submenu>
             <el-menu-item index="/message" >消息管理</el-menu-item>
             <el-submenu index="/user">
@@ -75,7 +76,7 @@ export default {
     handleSelect (key, keyPath) {
       console.log(key, keyPath)
       // this.activeIndex = key
-      console.log(this.activeIndex)
+      // console.log(this.activeIndex)
       if (key === '/home') {
         this.$router.push({ name: 'Home' })
       }
@@ -84,6 +85,9 @@ export default {
       }
       if (key === '/record/contacted') {
         this.$router.push({ name: 'Contacted' })
+      }
+      if (key === '/record/canceled') {
+        this.$router.push({ name: 'Canceled' })
       }
       if (key === '/message') {
         this.$router.push({ name: 'Message' })

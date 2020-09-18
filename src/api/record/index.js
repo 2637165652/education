@@ -2,12 +2,12 @@ import axios from 'axios'
 
 axios.defaults.baseURL = 'http://localhost:8888/'
 
-export function getUncontectList (publisherId) {
+export function getUncontectList (userId) {
   return axios({
     url: '/get_uncontact',
     method: 'get',
     params: {
-      publisherId
+      userId
     }
   })
 }
@@ -38,6 +38,39 @@ export function republish ({ studentsex, grade, subject, requirement, address, l
       linkname,
       linkphone,
       publisherId
+    }
+  })
+}
+
+/**
+ * 修改家教信息
+ */
+export function modify ({ recordNum, studentsex, grade, subject, requirement, address, linkname, linkphone }) {
+  return axios({
+    url: '/modify',
+    method: 'post',
+    data: {
+      recordNum,
+      studentsex,
+      grade,
+      subject,
+      requirement,
+      address,
+      linkname,
+      linkphone
+    }
+  })
+}
+
+/**
+ * 修改家教信息
+ */
+export function cancel (record = {}) {
+  return axios({
+    url: '/cancel',
+    method: 'post',
+    data: {
+      record
     }
   })
 }

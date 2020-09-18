@@ -67,7 +67,7 @@
       </el-row>
     </el-form>
     <el-table :data="dataList" stripe style="width: 100%" border v-loading="isLoading">
-      <el-table-column prop="recordNum" label="编号" width="100"></el-table-column>
+      <el-table-column prop="recordNum" label="编号" width="80"></el-table-column>
       <el-table-column prop="studentsex" label="学生性别" width="100"></el-table-column>
       <el-table-column prop="grade" label="年级" width="100"></el-table-column>
       <el-table-column prop="subject" label="科目" width="100"></el-table-column>

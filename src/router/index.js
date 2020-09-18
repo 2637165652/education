@@ -31,6 +31,11 @@ export default new Router({
       component: () => import('@/views/record/Contacted.vue')
     },
     {
+      path: '/record/canceled',
+      name: 'Canceled',
+      component: () => import('@/views/record/Canceled.vue')
+    },
+    {
       path: '/message',
       name: 'Message',
       component: () => import('@/views/message/Message.vue')

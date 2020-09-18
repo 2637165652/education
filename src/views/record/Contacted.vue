@@ -6,9 +6,9 @@
     </el-breadcrumb>
     <el-table :data="dataList" stripe style="width: 100%" border v-loading="isLoading">
       <el-table-column prop="recordNum" label="编号" width="80"></el-table-column>
-      <el-table-column prop="studentsex" label="学生性别" width="80"></el-table-column>
-      <el-table-column prop="grade" label="年级" width="80"></el-table-column>
-      <el-table-column prop="subject" label="科目" width="80"></el-table-column>
+      <el-table-column prop="studentsex" label="学生性别" ></el-table-column>
+      <el-table-column prop="grade" label="年级" ></el-table-column>
+      <el-table-column prop="subject" label="科目" ></el-table-column>
       <el-table-column prop="requirement" label="具体情况及要求" width="250"></el-table-column>
       <el-table-column prop="address" label="辅导地点" ></el-table-column>
       <el-table-column prop="linkname" label="家长" ></el-table-column>
@@ -41,7 +41,7 @@
     <!-- 发布家教 -->
     <el-dialog class="release-dialog" title="发布家教"
       :visible.sync="release_visibleDialog" width="800px"
-      @closed = "releaseForm = { name: '', phone: ''}">
+      @closed = "releaseForm = {}">
       <el-form :inline="true" ref="releaseForm1" :model="releaseForm" :rules="releaseRules" class="inline-form">
         <el-form-item label="学生性别" prop="studentsex">
           <el-select v-model="releaseForm.studentsex" placeholder="请选择">
@@ -120,15 +120,7 @@ export default {
       user: {},
       dataList: [],
       release_visibleDialog: false,
-      releaseForm: {
-        studentsex: '',
-        grade: '',
-        subject: '',
-        requirement: '',
-        address: '',
-        linkname: '',
-        linkphone: ''
-      },
+      releaseForm: {},
       releaseRules: {
         studentsex: [{ required: true, message: '请选择学生性别', trigger: 'change' }],
         grade: [{ required: true, message: '请选择年级', trigger: 'change' }],
@@ -143,12 +135,12 @@ export default {
   created () {
     this.isLogined = this.$store.state.isLogined
     this.user = JSON.parse(localStorage.getItem('user'))
-    this.getDataList(this.user.userId)
+    this.getDataList()
   },
   methods: {
-    getDataList (userId) {
+    getDataList () {
       this.isLoading = true
-      getContectedList(userId).then(res => {
+      getContectedList(this.user.userId).then(res => {
         console.log(res.data)
         this.dataList = res.data.list
       }).catch(err => {
