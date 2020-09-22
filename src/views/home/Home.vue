@@ -89,7 +89,7 @@
     >
     </el-pagination>
     <div class="footer">
-      <span>网上自助家教系统 Copyright&copy;</span><br>
+      <span>夏日朔梦_网上自助家教系统 Copyright&copy;</span><br>
       <span>华南师范大学计算机学院20162180057</span>
     </div>
     <!-- 领取家教 -->
