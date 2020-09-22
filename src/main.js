@@ -13,6 +13,19 @@ Vue.use(filters)
 
 Vue.config.productionTip = false
 
+// 全局前置守卫 权限控制
+router.beforeEach((to, from, next) => {
+  if (to.meta.auth) {
+    if (localStorage.getItem('user')) {
+      next()
+    } else {
+      next({name: 'Login'})
+    }
+  } else {
+    next()
+  }
+})
+
 /* eslint-disable no-new */
 new Vue({
   el: '#app',

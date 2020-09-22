@@ -23,31 +23,37 @@ export default new Router({
     {
       path: '/record/uncontact',
       name: 'Uncontact',
+      meta: { auth: true },
       component: () => import('@/views/record/Uncontact.vue')
     },
     {
       path: '/record/contacted',
       name: 'Contacted',
+      meta: { auth: true },
       component: () => import('@/views/record/Contacted.vue')
     },
     {
       path: '/record/canceled',
       name: 'Canceled',
+      meta: { auth: true },
       component: () => import('@/views/record/Canceled.vue')
     },
     {
       path: '/message',
       name: 'Message',
+      meta: { auth: true },
       component: () => import('@/views/message/Message.vue')
     },
     {
       path: '/user/profile',
       name: 'Profile',
+      meta: { auth: true },
       component: () => import('@/views/user/Profile.vue')
     },
     {
       path: '/user/modify_password',
       name: 'ModifyPassword',
+      meta: { auth: true },
       component: () => import('@/views/user/ModifyPassword.vue')
     }
   ]
