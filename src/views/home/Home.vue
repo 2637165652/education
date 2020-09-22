@@ -153,7 +153,7 @@
           </el-select>
         </el-form-item>
       </el-form>
-      <el-form ref="releaseForm2" :model="releaseForm" :rules="releaseRules" label-width="140px">
+      <el-form ref="releaseForm2" :model="releaseForm" :rules="releaseRules" label-width="150px">
         <el-form-item label="学生情况及教师要求" prop="requirement">
           <el-input type="textarea" :rows="5" v-model="releaseForm.requirement"  placeholder="请参考下面的格式填写此项"></el-input>
         </el-form-item>
