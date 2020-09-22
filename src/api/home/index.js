@@ -5,7 +5,7 @@ axios.defaults.baseURL = 'http://localhost:8888/'
 /**
  * @param {string} recordNum
  */
-export function getList (recordNum = '111', grade = '', subject = '', studentsex = '', page = 1, pageSize = 6) {
+export function getList (recordNum = '111', grade = '', subject = '', studentsex = '', page = 1, pageSize = 10) {
   return axios({
     url: '/family_education',
     method: 'get',

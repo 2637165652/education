@@ -79,15 +79,19 @@
         </template>
       </el-table-column>
     </el-table>
-      <!-- hide-on-single-page -->
     <el-pagination
       :page-size="pageSize"
       :current-page.sync="currentPage"
       @current-change="handlePageChange"
       layout="prev, pager, next, total"
       :total="count"
+      hide-on-single-page
     >
     </el-pagination>
+    <div class="footer">
+      <span>网上自助家教系统 Copyright&copy;</span><br>
+      <span>华南师范大学计算机学院20162180057</span>
+    </div>
     <!-- 领取家教 -->
     <el-dialog class="receive-dialog" title="领取家教"
       :visible.sync="receive_visibleDialog" width="400px"
@@ -243,7 +247,7 @@ export default {
     this.getDataList()
   },
   methods: {
-    getDataList (recordNum = '', grade = '', subject = '', studentsex = '', page = 1, pageSize = 5) {
+    getDataList (recordNum = '', grade = '', subject = '', studentsex = '', page = 1, pageSize = 10) {
       this.isLoading = true
       getList(recordNum, grade, subject, studentsex, page, pageSize).then(res => {
         console.log(res.data.pageHolder)
@@ -366,10 +370,20 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-body{padding-right:0px!important}
 .home
-  // border 1px red solid
   padding 15px
+.filter-form
+  width 900px
+  .el-form-item
+    display flex
+    box-sizing border-box
+    margin-right 0
+  >>> .el-form-item__content
+    flex 1
+    .el-select
+      width 100%
+  .el-input
+    width 100%
 .release-dialog
   position fixed
   top -80px !important
@@ -380,4 +394,12 @@ body{padding-right:0px!important}
           width 140px
           .el-select
             width 100%
+.el-pagination
+  margin 20px 0 0
+.footer
+  margin-top 20px
+  padding-top 20px
+  border-top 1px #9e9ea5 solid
+  font-size 12px
+  color #9e9ea5
 </style>

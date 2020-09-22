@@ -345,6 +345,31 @@ app.post('/modify_usermessage', (req, res) => {
     }
   })
 })
+// 修改密码
+app.post('/modify_password', (req, res) => {
+  console.log(req.body)
+  var sql = "select password from usermessage where userId= '" + req.body.userId +"'"
+  connection.query(sql, function (err, result) {
+    if (err) {
+      console.log(err.message)
+      res.send({code: 101})
+    }
+    if (result[0].password !== req.body.oldpassword) {
+      res.send({code: 102, desc: '原密码不正确'})
+    } else {
+      sql='update usermessage set password=? where userId=?'
+      var sqlParams=[req.body.newpassword, req.body.userId]
+      connection.query(sql, sqlParams, function(err2, result2) {
+        if (err2) {
+          console.log(err2.message)
+          res.send({code: 101})
+        } else {
+          res.send({code: 100})
+        }
+      })
+    }
+  })
+})
 
 app.listen(8888, function () {
   console.log('Your server is running at http://127.0.0.1:8888')

@@ -34,3 +34,18 @@ export function modifyUsermessage ({ userId, username, sex, phonenumber, address
     }
   })
 }
+
+/**
+ * 密码修改
+ */
+export function modifyPassword (userId, oldpassword, newpassword) {
+  return axios({
+    url: '/modify_password',
+    method: 'post',
+    data: {
+      userId,
+      oldpassword,
+      newpassword
+    }
+  })
+}

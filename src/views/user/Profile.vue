@@ -28,10 +28,10 @@
           </el-select>
         </el-form-item>
         <template v-if="profileForm.identity === '教师'">
-          <el-form-item label="学校" >
+          <el-form-item label="学校" prop="schoolname">
             <el-input v-model="profileForm.schoolname"></el-input>
           </el-form-item>
-          <el-form-item label="学号">
+          <el-form-item label="学号" prop="studentId" >
             <el-input v-model="profileForm.studentId"></el-input>
           </el-form-item>
         </template>
@@ -56,7 +56,9 @@ export default {
         sex: [{ required: true, message: '请选择性别', trigger: 'change' }],
         phonenumber: [{ required: true, message: '请填写手机号', trigger: 'blur' }],
         address: [{ required: true, message: '请填写住址', trigger: 'blur' }],
-        identity: [{ required: true, message: '请选择您的角色', trigger: 'change' }]
+        identity: [{ required: true, message: '请选择您的角色', trigger: 'change' }],
+        schoolname: [{ required: true, message: '请填写学校', trigger: 'blur' }],
+        studentId: [{ required: true, message: '请填写学号', trigger: 'blur' }]
       }
     }
   },

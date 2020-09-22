@@ -18,10 +18,11 @@
               <el-menu-item index="/record/contacted">已联系家教</el-menu-item>
               <el-menu-item index="/record/canceled">已撤销家教</el-menu-item>
             </el-submenu>
-            <el-menu-item index="/message" >消息管理</el-menu-item>
+            <el-menu-item index="/message" disabled>消息管理</el-menu-item>
             <el-submenu index="/user">
               <template slot="title">个人中心</template>
               <el-menu-item index="/user/profile">用户资料</el-menu-item>
+              <el-menu-item index="/user/modify_password">密码修改</el-menu-item>
               <el-menu-item index="/logout" @click="logout">退出</el-menu-item>
             </el-submenu>
           </template>
@@ -96,6 +97,9 @@ export default {
       if (key === '/user/profile') {
         this.$router.push({ name: 'Profile' })
       }
+      if (key === '/user/modify_password') {
+        this.$router.push({ name: 'ModifyPassword' })
+      }
       if (key === '/logout') {
         localStorage.removeItem('user')
         this.isLogined = false
@@ -117,19 +121,16 @@ export default {
 #app
   min-width 1200px
   height 100%
-.el-header {
-  background-color: #B3C0D1;
-  color: #333;
-  text-align: center;
-  line-height: 60px;
-  padding: 0px;
-}
-.el-menu
-  // padding 0px 50px
-.el-main {
-  background-color: #E9EEF3;
-  color: #333;
-  text-align: center;
-  // padding: 10px 0px;
-}
+  background-color #e9eef3
+.el-header
+  background-color #B3C0D1
+  color #333
+  text-align center
+  line-height 60px
+  padding 0px
+.el-main
+  background-color #E9EEF3
+  color #333
+  text-align center
+  // padding 10px 0px
 </style>
