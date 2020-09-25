@@ -71,9 +71,9 @@
       <el-table-column prop="studentsex" label="学生性别" width="100"></el-table-column>
       <el-table-column prop="grade" label="年级" width="100"></el-table-column>
       <el-table-column prop="subject" label="科目" width="100"></el-table-column>
-      <el-table-column prop="requirement" label="具体情况及要求" width="400"></el-table-column>
+      <el-table-column prop="requirement" label="具体情况及要求" ></el-table-column>
       <el-table-column prop="address" label="辅导地点" ></el-table-column>
-      <el-table-column prop="" label="操作" >
+      <el-table-column prop="" label="操作" width="130">
         <template slot-scope="{ row }">
           <el-button type="text" @click="handleReceive(row)">领取家教</el-button>
         </template>
@@ -153,7 +153,7 @@
           </el-select>
         </el-form-item>
       </el-form>
-      <el-form ref="releaseForm2" :model="releaseForm" :rules="releaseRules" label-width="140px">
+      <el-form ref="releaseForm2" :model="releaseForm" :rules="releaseRules" label-width="150px">
         <el-form-item label="学生情况及教师要求" prop="requirement">
           <el-input type="textarea" :rows="5" v-model="releaseForm.requirement"  placeholder="请参考下面的格式填写此项"></el-input>
         </el-form-item>

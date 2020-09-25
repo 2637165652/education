@@ -18,7 +18,7 @@
           {{ row.releaseDate | moment }}
         </template>
       </el-table-column>
-      <el-table-column prop="" label="操作" >
+      <el-table-column prop="" label="操作" width="130">
         <template slot-scope="{ row }">
           <el-button type="text" @click="handleModify(row)">修改</el-button>
           <el-button type="text" @click="handleCancel(row)">撤销</el-button>
