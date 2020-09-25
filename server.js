@@ -226,8 +226,29 @@ app.post('/modify', (req, res) => {
 // 撤销家教
 app.post('/cancel', (req, res) => {
   var record = req.body.record
-  console.log(req.body.item.recordNum)
-  res.send({code: 100})
+  console.log(record.recordNum)
+  var date = new Date(record.releaseDate)
+  var releaseDate = date.toLocaleDateString()
+  date = new Date()
+  var cancelDate = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate() + ' ' + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds()
+  var sql = 'insert into record_canceled(recordNum,studentsex,grade,subject,requirement,address,linkname,linkphone,publisherId,releaseDate,cancelDate) value(?,?,?,?,?,?,?,?,?,?,?)'
+  var sqlParams = [record.recordNum, record.studentsex, record.grade, record.subject, record.requirement, record.address, record.linkname, record.linkphone, record.publisherId, releaseDate, cancelDate]
+  connection.query(sql, sqlParams, function (err, result) {
+    if (err) {
+      console.log('[撤销家教失败] - ', err.message)
+      res.send({code: 101})
+    } else {
+      sql = "delete from record_uncontacted where recordNum= '" + record.recordNum + "'"
+      connection.query(sql, function (err2, result2) {
+        if (err2) {
+          console.log('[撤销家教失败] - ',err2.message)
+          res.send({code: 102})
+        } else {
+          res.send({code: 100})
+        }
+      })
+    }
+  })
 })
 
 // 我的家教 > 已联系
@@ -250,7 +271,7 @@ app.get('/get_contacted', (req, res) => {
   })
 })
 
-// 已联系 -> 重新编辑发布
+// 已联系 -> 重新编辑发布 (其实与发布家教接口一样的)
 app.post('/re_release', (req, res) => {
   console.log(req.body)
   var date = new Date()
@@ -265,6 +286,87 @@ app.post('/re_release', (req, res) => {
     } else {
       console.log('发布家教成功')
       res.send({code: 100})
+    }
+  })
+})
+
+// 我的家教 > 已撤销
+app.get('/get_canceled', (req, res) => {
+  // console.log(req.query)
+  var sql = 'select * from record_canceled where publisherId=? order by cancelDate desc'
+  var sqlParams = [req.query.userId]
+  connection.query(sql, sqlParams, function (err, result) {
+    if (err) {
+      console.log('[查询记录出错] - ' + err.message)
+      res.send({code: 101})
+    } else {
+      console.log('查询记录成功')
+      var response = {
+        code: 100,
+        list: result
+      }
+      res.send(response)
+    }
+  })
+})
+
+// 获取用户个人资料
+app.get('/get_usermessage', (req, res) => {
+  // console.log(req.query.userId)
+  var sql='select * from usermessage where userId=?'
+  var sqlParams=[req.query.userId]
+  connection.query(sql, sqlParams, function (err, result) {
+    if (err) {
+      console.log("[查询出错] - " + err.message)
+      res.send({code: 101})
+    } else {
+      console.log("查询资料成功")
+      var response = {
+        code: 100,
+        user: result[0]
+      }
+      res.send(response)
+    }
+  })
+})
+// 修改用户资料
+app.post('/modify_usermessage', (req, res) => {
+  console.log(req.body)
+  var sql = 'update usermessage set username=?,sex=?,phonenumber=?,address=?,identity=?,schoolname=?,studentId=? where userId=?'
+  var sqlParams=[req.body.username, req.body.sex, req.body.phonenumber, req.body.address,
+    req.body.identity, req.body.schoolname, req.body.studentId, req.body.userId]
+  connection.query(sql, sqlParams, function (err, result) {
+    if (err) {
+      console.log("[修改出错] - " + err.message)
+      res.send({code: 101})
+    } else {
+      console.log("查询资料成功")
+      res.send({code: 100})
+    }
+  })
+})
+// 修改密码
+app.post('/modify_password', (req, res) => {
+  console.log(req.body)
+  var sql = "select password from usermessage where userId= '" + req.body.userId +"'"
+  connection.query(sql, function (err, result) {
+    if (err) {
+      console.log(err.message)
+      res.send({code: 101})
+    }
+    if (result[0].password !== req.body.oldpassword) {
+      res.send({code: 102, desc: '原密码不正确'})
+    } else {
+      sql='update usermessage set password=? where userId=?'
+      var sqlParams=[req.body.newpassword, req.body.userId]
+      connection.query(sql, sqlParams, function(err2, result2) {
+        if (err2) {
+          console.log(err2.message)
+          res.send({code: 101})
+        } else {
+          res.send({code: 100})
+        }
+      })
     }
   })
 })

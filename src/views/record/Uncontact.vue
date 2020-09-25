@@ -150,12 +150,10 @@ export default {
           modify(this.modifyForm).then(res => {
             console.log(res.data)
             this.modify_visibleDialog = false
-            // this.$alert(`家教信息修改成功！`, '提示', {
-            //   confirmButtonText: '确定'
-            // })
-            this.$message({
-              message: '修改成功！',
-              type: 'success'
+            this.$notify({
+              title: '通知',
+              type: 'success',
+              message: '修改成功'
             })
             this.getDataList()
           }).catch(err => {
@@ -174,15 +172,17 @@ export default {
         type: 'warning'
       }).then(() => {
         cancel(row).then(res => {
-          console.log(res.data)
+          console.log(res)
+          this.$notify({
+            title: '通知',
+            type: 'success',
+            message: '撤销成功'
+          })
+          this.getDataList()
         }).catch(err => {
           console.log(err)
         }).finally(() => {
           //
-        })
-        this.$message({
-          type: 'success',
-          message: '撤销成功!'
         })
       })
     }
