@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <el-container>
-      <el-header>
+      <el-header class="header">
         <el-menu
           :default-active="activeIndex"
           class="el-menu-demo"
@@ -128,6 +128,9 @@ export default {
   text-align center
   line-height 60px
   padding 0px
+  position sticky
+  top 0
+  z-index 1000
 .el-main
   background-color #E9EEF3
   color #333
